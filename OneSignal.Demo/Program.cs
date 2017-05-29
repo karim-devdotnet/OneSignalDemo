@@ -29,7 +29,7 @@ namespace OneSignal.Demo
                                                     + "\"app_id\": \"9423ab70-f216-4a77-a364-cdf74f40e4fb\","
                                                     + "\"contents\": {\"en\": \"English Message\"},"
                                                     + "\"headings\": {\"en\": \"Test...\"},"
-                                                    + "\"data\": {\"foo\": \"bar\",\"your\": \"custom metadata\"},"
+                                                    + "\"data\": {\"notificationType\": \"SimpleTextMessage\",\"messageId\": \"03c2de5a-d08b-4b32-9723-d17034a64305\"},"
                                                     + "\"include_player_ids\": [\"17135056-a51d-4b45-bc7c-731b4b3a79eb\"]}");
 
             string responseContent = null;
