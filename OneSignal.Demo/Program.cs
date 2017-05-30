@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 
 namespace OneSignal.Demo
 {
@@ -25,12 +26,19 @@ namespace OneSignal.Demo
 
             request.Headers.Add("authorization", "Basic NGEwMGZmMjItY2NkNy0xMWUzLTk5ZDUtMDAwYzI5NDBlNjJj");
 
-            byte[] byteArray = Encoding.UTF8.GetBytes("{"
-                                                    + "\"app_id\": \"9423ab70-f216-4a77-a364-cdf74f40e4fb\","
-                                                    + "\"contents\": {\"en\": \"English Message\"},"
-                                                    + "\"headings\": {\"en\": \"Test...\"},"
-                                                    + "\"data\": {\"notificationType\": \"SimpleTextMessage\",\"messageId\": \"03c2de5a-d08b-4b32-9723-d17034a64305\"},"
-                                                    + "\"include_player_ids\": [\"17135056-a51d-4b45-bc7c-731b4b3a79eb\"]}");
+            var serializer = new JavaScriptSerializer();
+            var obj = new
+            {
+                app_id = "9423ab70-f216-4a77-a364-cdf74f40e4fb",
+                contents = new { en = "English Message" },
+                headings = new { en = "TEST" },
+                data = new { notificationType  = "SimpleTextMessage", messageId= "03c2de5a-d08b-4b32-9723-d17034a64305" },
+                ledcolor = "FF63697F",
+                include_player_ids = new string[] { "17135056-a51d-4b45-bc7c-731b4b3a79eb", "82828ec2-7a9b-46c6-a781-ab07fb2a5998" }
+            };
+
+            var param = serializer.Serialize(obj);
+            byte[] byteArray = Encoding.UTF8.GetBytes(param);
 
             string responseContent = null;
 
