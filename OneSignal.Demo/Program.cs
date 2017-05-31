@@ -1,4 +1,7 @@
-﻿using System;
+﻿using OneSignal.CSharp.SDK;
+using OneSignal.CSharp.SDK.Resources;
+using OneSignal.CSharp.SDK.Resources.Notifications;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,7 +16,8 @@ namespace OneSignal.Demo
     {
         static void Main(string[] args)
         {
-            SendPushNotification();
+            //SendPushNotification();
+            SendPushNotificationUsingCSharpSDk();
         }
 
         private static void SendPushNotification()
@@ -24,7 +28,7 @@ namespace OneSignal.Demo
             request.Method = "POST";
             request.ContentType = "application/json; charset=utf-8";
 
-            request.Headers.Add("authorization", "Basic NGEwMGZmMjItY2NkNy0xMWUzLTk5ZDUtMDAwYzI5NDBlNjJj");
+            request.Headers.Add("authorization", "Basic M2QwNDM1NTktNjc2Yi00OWY1LTg5ZjYtZjlhNzE2ZjJjMGFm");
 
             var serializer = new JavaScriptSerializer();
             var obj = new
@@ -33,7 +37,6 @@ namespace OneSignal.Demo
                 contents = new { en = "English Message" },
                 headings = new { en = "TEST" },
                 data = new { notificationType  = "SimpleTextMessage", messageId= "03c2de5a-d08b-4b32-9723-d17034a64305" },
-                ledcolor = "FF63697F",
                 include_player_ids = new string[] { "17135056-a51d-4b45-bc7c-731b4b3a79eb", "82828ec2-7a9b-46c6-a781-ab07fb2a5998" }
             };
 
@@ -64,6 +67,39 @@ namespace OneSignal.Demo
             }
 
             System.Diagnostics.Debug.WriteLine(responseContent);
+        }
+
+        private static void SendPushNotificationUsingCSharpSDk()
+        {
+            NotificationCreateResult result = null;
+
+            var client = new OneSignalClient("M2QwNDM1NTktNjc2Yi00OWY1LTg5ZjYtZjlhNzE2ZjJjMGFm");
+
+            var options = new NotificationCreateOptions();
+
+            options.AppId = new Guid("9423ab70-f216-4a77-a364-cdf74f40e4fb");
+            //options.IncludedSegments = new List<string> { "All" };
+            options.Contents.Add(LanguageCodes.English, "Hello world!");
+            options.Headings.Add(LanguageCodes.English, "Hello!");
+            options.IncludePlayerIds = new List<string> { "17135056-a51d-4b45-bc7c-731b4b3a79eb","82828ec2-7a9b-46c6-a781-ab07fb2a5998" };
+            options.Data = new Dictionary<string, string>();
+            options.Data.Add("notificationType", "SimpleTextMessage");
+            options.Data.Add("messageId", "03c2de5a-d08b-4b32-9723-d17034a64305");
+            options.AndroidLedColor = "FF0000FF";
+            options.IosBadgeType = IosBadgeTypeEnum.SetTo;
+            options.IosBadgeCount = 10;
+            options.AndroidAccentColor = "FFFF0000";
+            options.Priority = 10;
+            options.DeliverToAndroid = false;
+            try
+            {
+                result = client.Notifications.Create(options);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
         }
     }
 }
